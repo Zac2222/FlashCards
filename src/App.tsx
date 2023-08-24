@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import FlashCards from './components/FlashCards';
 
 interface TriviaCategory {
   id: number;
@@ -14,7 +15,7 @@ function App() {
 
   return (
     <div>
-      
+      <FlashCards/>
     </div>
   );
 }
