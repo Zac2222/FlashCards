@@ -1,7 +1,24 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, Text } from '@chakra-ui/react'
-
+import { Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, Text } from '@chakra-ui/react';
+import { fetchTriviaQuestion } from '../services/apiServices'; 
+import { useEffect, useState } from 'react';
 
 const FlashCards = () => {
+  const [question, setQuestion] = useState<string>('');
+  const [answers, setAnswers] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function getQuestion() {
+      try {
+        const triviaData = await fetchTriviaQuestion();
+        setQuestion(triviaData.question);
+        setAnswers([...triviaData.incorrect_answers, triviaData.correct_answer].sort()); // Include correct and incorrect answers, sorted
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getQuestion();
+  }, []);
+
   return (
     <div className='centerContainer'>
       <Card align='center' borderRadius={30} className='cardAdjust'>
@@ -10,15 +27,17 @@ const FlashCards = () => {
         </CardHeader>
         
         <CardBody fontSize={'30px'}>
-          <Text fontSize={'50px'}>when did the who and why did they do it there?</Text>
+          <Text fontSize={'24px'} fontWeight="bold" mb={4}>{question}</Text>
           <Flex justifyContent="center" alignItems="center" mt={4}>
             <Flex direction="column" alignItems="center" mr={'300px'}>
-              <Text>A: who</Text>
-              <Text>B: what</Text>
+              {answers.slice(0, 2).map((answer, index) => (
+                <Text key={index}>{String.fromCharCode(65 + index)}: {answer}</Text>
+              ))}
             </Flex>
             <Flex direction="column" alignItems="center">
-              <Text>C: when</Text>
-              <Text>D: where</Text>
+              {answers.slice(2).map((answer, index) => (
+                <Text key={index}>{String.fromCharCode(67 + index)}: {answer}</Text>
+              ))}
             </Flex>
           </Flex>
         </CardBody>
@@ -28,8 +47,9 @@ const FlashCards = () => {
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
 
-export default FlashCards
+export default FlashCards;
+
 
