@@ -5,19 +5,26 @@ import { useEffect, useState } from 'react';
 const FlashCards = () => {
   const [question, setQuestion] = useState<string>('');
   const [answers, setAnswers] = useState<string[]>([]);
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [showingAnswer, setShowingAnswer] = useState(false);
 
   useEffect(() => {
     async function getQuestion() {
       try {
         const triviaData = await fetchTriviaQuestion();
         setQuestion(triviaData.question);
-        setAnswers([...triviaData.incorrect_answers, triviaData.correct_answer].sort()); // Include correct and incorrect answers, sorted
+        setAnswers([...triviaData.incorrect_answers, triviaData.correct_answer].sort());
+        setCorrectAnswer(triviaData.correct_answer);
       } catch (error) {
         console.error(error);
       }
     }
     getQuestion();
   }, []);
+
+  const toggleCard = () => {
+    setShowingAnswer((prevState) => !prevState);
+  };
 
   return (
     <div className='centerContainer'>
@@ -27,7 +34,11 @@ const FlashCards = () => {
         </CardHeader>
         
         <CardBody fontSize={'30px'}>
-          <Text fontSize={'24px'} fontWeight="bold" mb={4}>{question}</Text>
+          <Flex direction="column" alignItems="center" mb={showingAnswer ? 4 : 0}>
+            <Text fontSize={'24px'} fontWeight="bold" mb={4}>
+              {showingAnswer ? correctAnswer : question}
+            </Text>
+          </Flex>
           <Flex justifyContent="center" alignItems="center" mt={4}>
             <Flex direction="column" alignItems="center" mr={'300px'}>
               {answers.slice(0, 2).map((answer, index) => (
@@ -43,7 +54,9 @@ const FlashCards = () => {
         </CardBody>
         
         <CardFooter>
-          <Button colorScheme='blue'>View here</Button>
+          <Button colorScheme='blue' onClick={toggleCard}>
+            {showingAnswer ? 'Show Question' : 'Show Answer'}
+          </Button>
         </CardFooter>
       </Card>
     </div>
@@ -51,5 +64,6 @@ const FlashCards = () => {
 }
 
 export default FlashCards;
+
 
 
