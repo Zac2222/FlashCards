@@ -14,12 +14,7 @@ const FlipCard = ({ question, answer }:Props) => {
   };
 
   return (
-    <Card
-      align='center'
-      borderRadius={30}
-      className={`cardAdjust ${flipped ? 'flipped' : ''}`}
-      onClick={toggleCard}
-    >
+    <Card align='center' borderRadius={30} className={`cardAdjust ${flipped ? 'flipped' : ''}`} onClick={toggleCard}>
       <CardBody fontSize={'30px'}>
         <Text fontSize={'24px'} fontWeight='bold' mb={4}>
           {flipped ? answer : question}
