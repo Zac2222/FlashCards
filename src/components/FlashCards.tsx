@@ -1,15 +1,16 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Flex, FormControl, FormLabel, Heading, Select, Spacer, Text } from '@chakra-ui/react';
-import { fetchTriviaQuestion } from '../services/apiServices'; 
+import { fetchTriviaQuestions } from '../services/apiServices'; 
 import { useEffect, useState } from 'react';
-
+import CategoryDropdown from './Categories';
 
 const FlashCards = () => {
-  const [question, setQuestion] = useState<string>('');
+  const [questions, setQuestions] = useState<string>('');
   const [answers, setAnswers] = useState<string[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState('');
   const [showingAnswer, setShowingAnswer] = useState(false);
   const [numQuestions, setNumQuestions] = useState(1);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
 
   
@@ -18,8 +19,8 @@ const FlashCards = () => {
   useEffect(() => {
     async function getQuestion() {
       try {
-        const triviaData = await fetchTriviaQuestion(numQuestions);
-        setQuestion(triviaData.question);
+        const triviaData = await fetchTriviaQuestions(numQuestions, selectedCategory);
+        setQuestions(triviaData.question);
         setAnswers([...triviaData.incorrect_answers, triviaData.correct_answer].sort());
         setCorrectAnswer(triviaData.correct_answer);
       } catch (error) {
@@ -47,12 +48,15 @@ const FlashCards = () => {
     }
   };
 
-  const currentQuestion = question[currentQuestionIndex]; // Get the current question from the stored array
+  const currentQuestion = questions[currentQuestionIndex]; // Get the current question from the stored array
 
   if (!currentQuestion) {
     return <div>Loading...</div>;
   }
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
 
 
   return (
@@ -73,6 +77,8 @@ const FlashCards = () => {
           </Select>
       </FormControl>
 
+      <CategoryDropdown selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+
       <Card align={'center'} borderRadius={30} className='cardAdjust' width={'70%'}>
         <CardHeader>
           <Heading size='lg'>Question {currentQuestionIndex + 1}</Heading>
@@ -81,7 +87,7 @@ const FlashCards = () => {
         <CardBody fontSize={'30px'}>
           <Flex direction="column" alignItems="center" mb={showingAnswer ? 4 : 0}>
             <Text fontSize={'24px'} fontWeight="bold" mb={4}>
-              {showingAnswer ? correctAnswer : question}
+              {showingAnswer ? correctAnswer : questions}
             </Text>
           </Flex>
           <Flex justifyContent="center" alignItems="center" mt={4}>

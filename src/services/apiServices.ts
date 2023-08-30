@@ -2,18 +2,19 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: 'https://opentdb.com/api.php',
+  baseURL: 'https://opentdb.com/api.php?type=multiple',
 });
 
-export async function fetchTriviaQuestion(numQuestions: number) {
+export async function fetchTriviaQuestions(numQuestions: number, selectedCategory: string) {
   try {
     const response = await apiClient.get('', {
       params: {
-        amount: numQuestions, // Change this to the desired number of questions
+        amount: numQuestions,
+        category: selectedCategory,
  
       },
     });
-    return response.data.results[0]; // Assuming the API returns an array of results
+    return response.data.results[0]; // Api returns an array of questions
   } catch (error) {
     throw new Error('Error fetching trivia question: ' + error);
   }
