@@ -1,7 +1,7 @@
 import { Button, Card, CardBody, CardFooter, CardHeader, Flex, FormControl, FormLabel, Heading, Select, Spacer, Text } from '@chakra-ui/react';
 import { fetchTriviaQuestions } from '../services/apiServices'; 
 import { useEffect, useState } from 'react';
-import CategoryDropdown from './Categories';
+import Categories from './Categories';
 
 const FlashCards = () => {
   const [questions, setQuestions] = useState<string>('');
@@ -23,12 +23,13 @@ const FlashCards = () => {
         setQuestions(triviaData.question);
         setAnswers([...triviaData.incorrect_answers, triviaData.correct_answer].sort());
         setCorrectAnswer(triviaData.correct_answer);
+        
       } catch (error) {
         console.error(error);
       }
     }
     getQuestion();
-  }, [numQuestions, currentQuestionIndex]);
+  }, [numQuestions, currentQuestionIndex, selectedCategory]);
 
   const toggleCard = () => {
     setShowingAnswer((prevState) => !prevState);
@@ -56,6 +57,7 @@ const FlashCards = () => {
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
+    setCurrentQuestionIndex(0);
   };
 
 
@@ -77,7 +79,7 @@ const FlashCards = () => {
           </Select>
       </FormControl>
 
-      <CategoryDropdown selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
+      <Categories selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
 
       <Card align={'center'} borderRadius={30} className='cardAdjust' width={'70%'}>
         <CardHeader>

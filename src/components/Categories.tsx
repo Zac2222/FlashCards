@@ -6,7 +6,7 @@ interface Props {
     onCategoryChange: (category: string) => void;
 }
 
-const CategoryDropdown = ({ selectedCategory, onCategoryChange }:Props) => {
+const Categories = ({ selectedCategory, onCategoryChange }:Props) => {
   const categories = [
     { id: 9, name: 'Books' }, 
     { id: 10, name: 'Film' },
@@ -31,4 +31,4 @@ const CategoryDropdown = ({ selectedCategory, onCategoryChange }:Props) => {
   );
 };
 
-export default CategoryDropdown;
+export default Categories;
