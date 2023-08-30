@@ -1,5 +1,5 @@
-
 import axios from "axios";
+import he from "he"; // Import the HTML Entities library for decoding purposes (questions returned with a bunch of symbols in them)
 
 const apiClient = axios.create({
   baseURL: 'https://opentdb.com/api.php?type=multiple',
@@ -11,11 +11,18 @@ export async function fetchTriviaQuestions(numQuestions: number, selectedCategor
       params: {
         amount: numQuestions,
         category: selectedCategory,
- 
       },
     });
-    return response.data.results[0]; // Api returns an array of questions
+
+    const decodedQuestion = {
+      ...response.data.results[0],
+      question: he.decode(response.data.results[0].question), // Decode the question text
+      // You might also need to decode other fields if necessary
+    };
+
+    return decodedQuestion;
   } catch (error) {
     throw new Error('Error fetching trivia question: ' + error);
   }
 }
+

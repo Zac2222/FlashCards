@@ -8,16 +8,16 @@ interface Props {
 
 const Categories = ({ selectedCategory, onCategoryChange }:Props) => {
   const categories = [
-    { id: 9, name: 'Books' }, 
-    { id: 10, name: 'Film' },
-    { id: 11, name: 'Video Games' },
-    { id: 12, name: 'Board Games' },
-    { id: 13, name: 'Music' },
+    { id: 10, name: 'Entertainment: Books' }, 
+    { id: 11, name: 'Entertainment: Film' },
+    { id: 15, name: 'Entertainment: Video Games' },
+    { id: 16, name: 'Entertainment: Board Games' },
+    { id: 12, name: 'Entertainment: Music' },
 
   ];
 
   return (
-    <FormControl mb={1} width={'200px'}>
+    <FormControl mr={'-200px'} mb={'200px'} width={'200px'}>
       <FormLabel>Select Category</FormLabel>
       <Select value={selectedCategory} onChange={(e) => onCategoryChange(e.target.value)}>
         <option value="">Any Category</option>
