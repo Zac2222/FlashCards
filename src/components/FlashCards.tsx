@@ -3,6 +3,7 @@ import { fetchTriviaQuestions } from '../services/apiServices';
 import { useEffect, useState } from 'react';
 import Categories from './Categories';
 import QuestionAmount from './QuestionAmount';
+import he from 'he'; //show an error but it all works so like, im not sure, but i need this here for decoding
 
 const FlashCards = () => {
   const [questions, setQuestions] = useState<string>('');
@@ -21,9 +22,13 @@ const FlashCards = () => {
     async function getQuestion() {
       try {
         const triviaData = await fetchTriviaQuestions(numQuestions, selectedCategory);
-        setQuestions(triviaData.question);
-        setAnswers([...triviaData.incorrect_answers, triviaData.correct_answer].sort());
-        setCorrectAnswer(triviaData.correct_answer);
+        const decodedQuestion = he.decode(triviaData.question); //from here down decoding answers to remove the weird symbols
+        const decodedAnswers = triviaData.incorrect_answers.map((answer: string) => he.decode(answer));
+        const decodedCorrectAnswer = he.decode(triviaData.correct_answer);
+      
+        setQuestions(decodedQuestion);
+        setAnswers([...decodedAnswers, decodedCorrectAnswer].sort());
+        setCorrectAnswer(decodedCorrectAnswer);
         
       } catch (error) {
         console.error(error);
@@ -50,7 +55,7 @@ const FlashCards = () => {
   const goToNextQuestion = () => {
     if (currentQuestionIndex < numQuestions - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setShowingAnswer(false); // Reset showingAnswer when navigating
+      setShowingAnswer(false);
     }
   };
 
