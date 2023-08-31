@@ -17,7 +17,6 @@ export async function fetchTriviaQuestions(numQuestions: number, selectedCategor
     const decodedQuestion = {
       ...response.data.results[0],
       question: he.decode(response.data.results[0].question), // Decode the question text
-      // You might also need to decode other fields if necessary
     };
 
     return decodedQuestion;
