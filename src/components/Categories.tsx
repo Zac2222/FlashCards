@@ -6,6 +6,7 @@ interface Props {
 }
 
 const Categories = ({ selectedCategory, onCategoryChange }:Props) => {
+  //an array of category objects that stores their ids and names from the database
   const categories = [
     { id: 10, name: 'Entertainment: Books' }, 
     { id: 11, name: 'Entertainment: Film' },
@@ -20,8 +21,9 @@ const Categories = ({ selectedCategory, onCategoryChange }:Props) => {
       <FormLabel>Select Category</FormLabel>
       <Select value={selectedCategory} onChange={(e) => onCategoryChange(e.target.value)}>
         <option value="">Any Category</option>
+        {/* applies the category selected to the api */}
         {categories.map((category) => (
-          <option key={category.id} value={category.id}>
+          <option key={category.id} value={category.id}> 
             {category.name}
           </option>
         ))}

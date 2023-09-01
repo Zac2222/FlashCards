@@ -9,7 +9,7 @@ export async function fetchTriviaQuestions(numQuestions: number, selectedCategor
   try {
     const response = await apiClient.get('', {
       params: {
-        amount: numQuestions,
+        amount: numQuestions, //fetching the number of questions and category from the api
         category: selectedCategory,
       },
     });

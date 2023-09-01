@@ -10,7 +10,8 @@ const QuestionAmount = ({ numQuestions, onNumQuestionsChange }:Props) => {
   return (
     <FormControl mt={'150px'} width={'200px'}>
       <FormLabel>Select number of questions</FormLabel>
-      <Select value={numQuestions} onChange={(e) => onNumQuestionsChange(parseInt(e.target.value))}>
+      {/* gets the question value from the api and then adjusts it based on the selected option clicked from this dropdown */}
+      <Select value={numQuestions} onChange={(e) => onNumQuestionsChange(parseInt(e.target.value))}> 
         <option value={1}>1 question</option>
         <option value={2}>2 question</option>
         <option value={3}>3 question</option>
